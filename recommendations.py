@@ -86,3 +86,17 @@ def sim_pearson(prefs, p1, p2):
         return 0
     r = num/den
     return r
+
+
+def top_matches(prefs, person, n=5, similarity=sim_pearson):
+    """
+    Esta funcion calcula la similaridad que tiene una persona
+    con todas las demas (en prefs) y devuelve una lista con
+    los puntajes de manera descendete.
+    """
+    scores = [(similarity(prefs, person, other), other) for other in prefs
+              if other != person]
+
+    scores.sort()
+    scores.reverse()
+    return scores[:n]

@@ -1,28 +1,5 @@
 from math import sqrt
 
-# Diccionario de diccionarios (nested dictionary), con puntuacion que gente
-# le ha dado a ciertas peliculas
-critics = {'Tony Stark': {'Lady in the Water': 2.5, 'Snakes on a Plane': 3.5,
-                          'Just My Luck': 3.0, 'Superman Returns': 3.5,
-                          'You, Me and Dupree': 2.5, 'The Night Listener': 3.0},
-           'Emma Watson': {'Lady in the Water': 3.0, 'Snakes on a Plane': 3.5,
-                           'Just My Luck': 1.5, 'Superman Returns': 5.0,
-                           'The Night Listener': 3.0, 'You, Me and Dupree': 3.5},
-           'Dijkstra': {'Lady in the Water': 2.5, 'Snakes on a Plane': 3.0,
-                        'Superman Returns': 3.5, 'The Night Listener': 4.0},
-           'Claudia Pavlovich': {'Snakes on a Plane': 3.5, 'Just My Luck': 3.0,
-                                 'The Night Listener': 4.5, 'Superman Returns':
-                                 4.0, 'You, Me and Dupree': 2.5},
-           'Christian Ruink': {'Lady in the Water': 3.0, 'Snakes on a Plane': 4.0,
-                               'Just My Luck': 2.0, 'Superman Returns': 3.0,
-                               'The Night Listener': 3.0, 'You, Me and Dupree':
-                               2.0},
-           'Eduardo Yeomans': {'Lady in the Water': 3.0, 'Snakes on a Plane': 4.0,
-                               'The Night Listener': 3.0, 'Superman Returns':
-                               5.0, 'You, Me and Dupree': 3.5},
-           'El Robbie': {'Snakes on a Plane': 4.5, 'You, Me and Dupree': 1.0,
-                         'Superman Returns': 4.0}}
-
 
 def get_shared_items(prefs, person_1, person_2):
     # Obtenemos la lista de items compartidos
@@ -100,3 +77,35 @@ def top_matches(prefs, person, n=5, similarity=sim_pearson):
     scores.sort()
     scores.reverse()
     return scores[:n]
+
+
+def get_recommendations(prefs, person, similarity=sim_pearson):
+    totals = {}
+    sim_sums = {}
+    for other in prefs:
+        # No me comparo conmigo mismo
+        if other == person:
+            continue
+        sim = similarity(prefs, person, other)
+
+        # Ignoramos el score de 0 o menor
+        if sim <= 0:
+            continue
+        for item in prefs[other]:
+            # Solo puntuamos peliculas que no haya visto aun
+            if item not in prefs[person] or prefs[person][item] == 0:
+                # Similaridad * score
+                # setdefault eso como 'get' pero si no lo encuentra lo anade
+                totals.setdefault(item, 0)
+                totals[item] += prefs[other][item]*sim
+                # suma de similaridades
+                sim_sums.setdefault(item, 0)
+                sim_sums[item] += sim
+
+    # Creamos la lista normalizada
+    rankings = [(total / sim_sums[item], item)
+                for item, total in totals.items()]
+    # Regresamos la lista con cada par de pelicula y su score
+    rankings.sort()
+    rankings.reverse()
+    return rankings

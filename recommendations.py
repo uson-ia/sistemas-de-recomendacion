@@ -120,3 +120,22 @@ def transform_prefs(prefs):
             # Volteamos item y persona
             result[item][person] = prefs[person][item]
     return result
+
+
+def calculate_similar_items(prefs, n=10):
+    """
+    Esta funcion calcula la similaridad  que tiene cada item
+    con los demas (invierte el diccionario de criticas) usando
+    top_matches.
+    """
+    result = {}
+    item_prefs = transform_prefs(prefs)
+    c = 0
+    for item in item_prefs:
+        # Mostramos el status (para cantidad grande de items)
+        c += 1
+        if c % 100 == 0:
+            print c, " / ", len(item_prefs)
+        scores = top_matches(item_prefs, item, n=n, similarity=sim_distance)
+        result[item] = scores
+    return result

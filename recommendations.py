@@ -26,7 +26,7 @@ def sim_distance(prefs, person_1, person_2):
     sum_of_squares = sum([pow(prefs[person_1][item] - prefs[person_2][item],
                          2) for item in prefs[person_1]
                          if item in prefs[person_2]])
-    return 1/(1 + sum_of_squares)
+    return 1/(1 + sqrt(sum_of_squares))
 
 
 def sim_pearson(prefs, p1, p2):

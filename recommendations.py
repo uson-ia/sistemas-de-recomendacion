@@ -139,3 +139,35 @@ def calculate_similar_items(prefs, n=10):
         scores = top_matches(item_prefs, item, n=n, similarity=sim_distance)
         result[item] = scores
     return result
+
+
+def get_recommended_items(prefs, item_match, user):
+    user_ratings = prefs[user]
+    scores = {}
+    total_sim = {}
+
+    # Recorremos los items puntuados por el usuario
+    for (item, rating) in user_ratings.items():
+
+        # Recorremos los itemos similares a este
+        for (similarity, item2) in item_match[item]:
+
+            # Ignoramos si el usuario ya ha puntuado este itemo
+            if item2 in user_ratings:
+                continue
+
+            scores.setdefault(item2, 0)
+            scores[item2] += similarity*rating
+
+            # Suma de todas las similaridades
+            total_sim.setdefault(item2, 0)
+            total_sim[item2] += similarity
+
+    # Dividimos cada puntaje total entre la ponderacion total para
+    # obtener el promedio
+    rankings = [(score / total_sim[item], item)
+                for item, score in scores.items()]
+
+    rankings.sort()
+    rankings.reverse()
+    return rankings

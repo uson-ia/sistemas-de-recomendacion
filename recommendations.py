@@ -174,17 +174,17 @@ def get_recommended_items(prefs, item_match, user):
     return rankings
 
 
-def load_MovieLens_20m(path='ml-20m/movies.csv'):
+def load_MovieLens_20m(path='ml-20m'):
 
     # Obtenemos el titulo de las peliculas
     movies = {}
-    with open('ml-20m/movies.csv') as csv_file:
+    with open(path+'/movies.csv') as csv_file:
         reader = csv.DictReader(csv_file)
         for row in reader:
             movies[row['movieId']] = row['title']
     # Creamos las preferencias
     prefs = {}
-    with open('ml-20m/ratings.csv') as csv_file:
+    with open(path+'/ratings.csv') as csv_file:
         reader = csv.DictReader(csv_file)
         for row in reader:
             prefs.setdefault(row['userId'], {})

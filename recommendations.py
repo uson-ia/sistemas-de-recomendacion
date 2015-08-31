@@ -1,6 +1,6 @@
+# encoding: utf-8
 from math import sqrt
-import csv
-
+import movielens
 
 def get_shared_items(prefs, person_1, person_2):
     # Obtenemos la lista de items compartidos
@@ -174,36 +174,4 @@ def get_recommended_items(prefs, item_match, user):
     return rankings
 
 
-def load_MovieLens_20m(path='ml-20m'):
-
-    # Obtenemos el titulo de las peliculas
-    movies = {}
-    with open(path+'/movies.csv') as csv_file:
-        reader = csv.DictReader(csv_file)
-        for row in reader:
-            movies[row['movieId']] = row['title']
-    # Creamos las preferencias
-    prefs = {}
-    with open(path+'/ratings.csv') as csv_file:
-        reader = csv.DictReader(csv_file)
-        for row in reader:
-            prefs.setdefault(row['userId'], {})
-            prefs[row['userId']][row['movieId']] = float(row['rating'])
-    return prefs
-
-
-def load_MovieLens_100k(path='ml-100k'):
-
-    # Obtenemos el titulo de las peliculas
-    movies = {}
-    for line in open(path+'/u.item'):
-        (id, title) = line.split('|')[0:2]
-        movies[id] = title
-
-    # Cargamos datos
-    prefs = {}
-    for line in open(path+'/u.data'):
-        (user, movie_id, rating, ts) = line.split('\t')
-        prefs.setdefault(user, {})
-        prefs[user][movies[movie_id]] = float(rating)
-    return prefs
+prefs = movielens.load_100k()

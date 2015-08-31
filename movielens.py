@@ -3,7 +3,8 @@
 import csv
 import zipfile
 
-def load_100k(directory='datasets', filename='ml-100k', dataset_url="http://files.grouplens.org/datasets/movielens/ml-100k.zip"):
+def _load_from_u_files(directory, filename, dataset_url):
+    """ Load preference dictionary from u.item and u.data files inside a zip file (I think only 100k file uses this format) """
     directory_path = directory+'/'
     zip_filename = filename+".zip"
     movies_filename = filename+'/u.item'
@@ -26,7 +27,8 @@ def load_100k(directory='datasets', filename='ml-100k', dataset_url="http://file
                 prefs[user][movies[movie_id]] = float(rating)
     return prefs
 
-def load_20m(directory='datasets', filename='ml-20m', dataset_url="http://files.grouplens.org/datasets/movielens/20m.zip"):
+def _load_from_csv(directory, filename, dataset_url):
+    """ Load preference dictionary from movies.csv and ratings.csv files inside a zip file """
     directory_path = directory+'/'
     zip_filename = filename+".zip"
     movies_filename = filename+'/movies.csv'
@@ -48,3 +50,13 @@ def load_20m(directory='datasets', filename='ml-20m', dataset_url="http://files.
                 prefs.setdefault(row['userId'], {})
                 prefs[row['userId']][row['movieId']] = float(row['rating'])
         return prefs
+
+
+def load_100k():
+    return _load_from_u_files('datasets', 'ml-100k', "http://files.grouplens.org/datasets/movielens/ml-100k.zip")
+
+def load_20m():
+    return _load_from_csv('datasets', 'ml-20m', 'http://files.grouplens.org/datasets/movielens/ml-20m.zip')
+
+def load_latest():
+    return _load_from_csv('datasets', 'ml-latest', 'http://files.grouplens.org/datasets/movielens/ml-latest.zip')

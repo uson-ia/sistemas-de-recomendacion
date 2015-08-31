@@ -1,4 +1,5 @@
 # encoding: utf-8
+import os
 import urllib2
 import sys
 
@@ -9,13 +10,17 @@ BACKSPACE    = chr(8)
 TOTAL_BAR_LENGTH = 70
 EXAMPLE_DATASET_URL = "http://files.grouplens.org/datasets/movielens/ml-1m.zip"
 
-def download_file(file_url):
+def get_file(directory, file_url, file_name=""):
     """ Download a file from the given file_url and returns the name with which it was saved """
 
-    file_name = file_url.split('/')[-1]
+    if not file_name:
+        file_name = file_url.split('/')[-1]
     response = urllib2.urlopen(file_url)
 
-    with open(file_name, 'wb') as file:
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+    with open(directory+"/"+file_name, 'wb') as file:
         total_bytes = int(response.info().getheaders("Content-Length")[0])
         print "Descargando archivo: %s" % (file_name)
         print "Tamaño: %s KBs" % (total_bytes/1024.0)
@@ -28,11 +33,11 @@ def download_file(file_url):
 
             downloaded_bytes += len(buffer)
             file.write(buffer)
-            write_progress_bar(downloaded_bytes, total_bytes)
+            _write_progress_bar(downloaded_bytes, total_bytes)
 
     return file_name
 
-def write_progress_bar(downloaded_bytes, total_bytes):
+def _write_progress_bar(downloaded_bytes, total_bytes):
     """ Prints a string representing download progress. Can be called inside a loop and it overwrites itself """
 
     downloaded_fraction = float(downloaded_bytes)/total_bytes
@@ -59,4 +64,4 @@ if __name__ == '__main__':
               'python -m get_dataset "'+EXAMPLE_DATASET_URL+'"'
     else:
         data_set_url = sys.argv[1]
-        download_file(data_set_url)
+        get_file(data_set_url)

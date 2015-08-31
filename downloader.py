@@ -64,4 +64,4 @@ if __name__ == '__main__':
               'python -m get_dataset "'+EXAMPLE_DATASET_URL+'"'
     else:
         data_set_url = sys.argv[1]
-        get_file(data_set_url)
+        get_file('datasets', data_set_url)

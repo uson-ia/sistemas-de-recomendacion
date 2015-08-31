@@ -174,4 +174,4 @@ def get_recommended_items(prefs, item_match, user):
     return rankings
 
 
-prefs = movielens.load_100k()
+# prefs = movielens.load_100k() # this is how you would load the preference dictionary from the 100k dataset

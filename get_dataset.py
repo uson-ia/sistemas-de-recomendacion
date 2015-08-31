@@ -1,5 +1,6 @@
 # encoding: utf-8
 import urllib2
+import sys
 
 BLOCK_SIZE   = 8192
 FULL_SQUARE  = "█"
@@ -32,7 +33,7 @@ def download_file(file_url):
     return file_name
 
 def write_progress_bar(downloaded_bytes, total_bytes):
-    """ Prints a string representing download progress. Can be called inside a loop and it overwrites itself"""
+    """ Prints a string representing download progress. Can be called inside a loop and it overwrites itself """
 
     downloaded_fraction = float(downloaded_bytes)/total_bytes
     downloaded_bar_length = int(TOTAL_BAR_LENGTH*downloaded_fraction)
@@ -46,5 +47,12 @@ def write_progress_bar(downloaded_bytes, total_bytes):
 
     print progress_bar+percentage_string+carriage_return,
 
-data_set_url = DEFAULT_DATASET_URL
-download_file(data_set_url)
+
+if __name__ == '__main__':
+    """ Runs the script. If an argument is given, it's used as a url """
+    data_set_url = DEFAULT_DATASET_URL
+
+    if len(sys.argv) > 1:
+        data_set_url = sys.argv[1]
+
+    download_file(data_set_url)

@@ -1,5 +1,33 @@
 # -*- coding: utf-8 -*-
 
+"""
+
+# Instrucciones
+
+NOTA: Yo guardé el dataset de MovieLens en un pickle solo porque es mas rápida la lectura y escritura. el valor
+de data en la siguiente sesión de ipython es un diccionario que mapea críticos (string) a diccionarios que mapean
+películas (string) a calificaciones (float). Así que si usan el códice que subimos Gerardo y yo, pueden ignorar
+la parte del uso de pickle y cargar el diccionario en una variable llamada data. 
+
+1. Correr ipython
+```
+In [1]: import recommender
+
+In [2]: import cPickle as pickle
+
+In [3]: data = pickle.load(open("movielens.p", "rb"))
+
+In [4]: DB = recommender.criticsDB("movielens.db")
+
+In [5]: DB.db_create_tables()
+
+In [6]: DB.store_data(data)
+
+```
+
+
+"""
+
 from math import sqrt
 from sqlite3 import dbapi2 as sqlite
 import os
@@ -7,6 +35,11 @@ import os
 dirpath = os.path.dirname(os.path.abspath(__file__))
 
 movielens_db = "movielens.db"
+
+def fix_query_value(val):
+    if type(val) is str:
+        return val.replace("'", "''")
+    return val
 
 class criticsDB:
     def __init__(self, db_name):
@@ -20,7 +53,9 @@ class criticsDB:
         self.connection.commit()
 
     def select_entry_id(self, table, column, value):
-        table = self.connection.execute("select rowid from %s where %s = '%s'"
+        value = fix_query_value(value)
+        #print "select rowid from %s where %s='%s'" % (table, column, value)
+        table = self.connection.execute("select rowid from %s where %s='%s'"
                                         % (table, column, value))
         result = table.fetchone()
         if result is None:
@@ -29,8 +64,10 @@ class criticsDB:
             return result[0]
 
     def insert_entry_id(self, table, column, value):
+        value = fix_query_value(value)
         result = self.select_entry_id(table, column, value)
         if result is None:
+            #print "insert into %s (%s) values ('%s')" % (table, column, value)
             table = self.connection.execute("insert into %s (%s) values ('%s')"
                                         % (table, column, value))
             return table.lastrowid
@@ -52,7 +89,7 @@ class criticsDB:
     def get_score_id(self, user, movie):
         user_id = self.get_user_id(user)
         movie_id = self.get_movie_id(movie)
-        table = self.connection.execute("select rowid from scorelist where userid = %s and movieid = %s"
+        table = self.connection.execute("select rowid from scorelist where userid=%d and movieid=%d"
                                         % (user_id, movie_id))
         result = table.fetchone()
         if result is None:
@@ -87,9 +124,13 @@ class criticsDB:
         @movie is a string
         @score is a float
         """
+        total_users = len(data)
+        i = 1
         for user in data:
+            print "Processing user %s (%d/%d)" % (user, i, total_users)
             for movie in data[user]:
                 self.add_score(user, movie, data[user][movie])
+            i = i+1
         self.db_commit()
 
     def db_create_tables(self):
@@ -102,4 +143,4 @@ class criticsDB:
         self.connection.execute("create index moviescoreidx on scorelist(movieid)")
         self.db_commit()
 
-    
+

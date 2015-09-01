@@ -72,7 +72,7 @@ class criticsDB:
                                         % (table, column, value))
             return table.lastrowid
         else:
-            result
+            return result[0]
 
     def get_user_id(self, user):
         return self.select_entry_id("userlist", "name", user)
@@ -130,6 +130,24 @@ class criticsDB:
             print "Processing user %s (%d/%d)" % (user, i, total_users)
             for movie in data[user]:
                 self.add_score(user, movie, data[user][movie])
+            i = i+1
+        self.db_commit()
+
+    def store_movielens_data(self, data):
+        """
+        difference between this procedure and store_data is that this procedures assumes
+        that the users and movies are not duplicated
+        """
+        total_users = len(data)
+        i = 1
+        for user in data:
+            print "Processing user %s \t(%d/%d)" % (user, i, total_users)
+            for movie in data[user]:
+                score = data[user][movie]
+                user_id = self.connection.execute("insert into userlist (name) values ('%s')" % fix_query_value(user)).lastrowid
+                movie_id = self.connection.execute("insert into movielist (name) values ('%s')" % fix_query_value(movie)).lastrowid
+                self.connection.execute("insert into scorelist (userid, movieid, score) values (%d, %d, %f)"
+                                        % (user_id, movie_id, score))
             i = i+1
         self.db_commit()
 

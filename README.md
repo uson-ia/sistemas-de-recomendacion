@@ -34,10 +34,12 @@ Instrucciones. [pendiente]
 Los siguientes son puntos deseables en los que el proyecto podría mejorar. Si tienes tiempo de hackear alguno recibirás honor eterno:
 
 - **Agregar items a esta lista**
-- Agregar interfáz gráfica
+- Agregar interfáz gráfica [DONE] (creo... atte Eduardo)
 - Guardar resultados del entrenamiento (para no tener que calcular todo en cada corrida)
-- ...
-- ..
+- Añadir autocompletado de las películas en MovieLens al input text de /get-movies
+- Refinar el añadido de películas
+  - a) Restringir a que solo se puedan calificar películas que ya están en MovieLens, o
+  - b) Hacer una trácala para elegir strings semejantes como una misma película, como "El Rey León", "El Rey León (1994)" y "Rey León 1994" son strings diferentes pero hacen referencia a la misma película.
 - .
 
 ### Acerca de la implementacion del sistemilla web

@@ -37,7 +37,7 @@ def add_score():
     moviename = str(request.form["moviename"])
     moviescore = float(request.form["moviescore"])
     set_data(username, moviename, moviescore)
-    return redirect(url_for("get_movies"))
+    return render_template("redirect-user.html", data=username)
 
 def exit_handler():
     db.close()

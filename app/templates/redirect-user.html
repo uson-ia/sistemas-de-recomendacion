@@ -1,0 +1,8 @@
+<html>
+    <body onload="document.createElement('form').submit.call(document.getElementById('myForm'))">
+        <form id="myForm" name="myForm" action="/get-movies" method="post">
+            <input type=hidden name="username" id="val1" value="{{data}}"/>
+            <input type=hidden name="submit" id="submit" value="Continue"/>
+        </form>
+    </body>
+</html>

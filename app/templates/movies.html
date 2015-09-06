@@ -28,30 +28,26 @@
 
                 <div class="col s12">
                     <div class="card blue-grey darken-1">
-                        <form action="/" method="post">
-                        <div class="card-content white-text">
-                            <span class="card-title">¡Califica una película!</span>
-                            <div class="row">
-                                <div class="input-field col s10">
-                                    <i class="material-icons prefix">theaters</i>
-                                    <input id="icon_prefix" type="text" class="validate" name="moviename">
-                                    <label for="icon_prefix" class="active">Película</label>
+                        <form action="/add-score" method="post">
+                            <div class="card-content white-text">
+                                <span class="card-title">¡Califica una película!</span>
+                                <div class="row">
+                                    <div class="input-field col s10">
+                                        <i class="material-icons prefix">theaters</i>
+                                        <input id="icon_prefix" type="text" class="validate" name="moviename">
+                                        <label for="icon_prefix" class="active">Película</label>
+                                    </div>
+                                    <div class="input-field col s2 range-field">
+                                        <i class="material-icons prefix">stars</i>
+                                        <input id="score_prefix" type="number" step="0.5" min="0.0" max="5.0" value="0"
+                                               name="moviescore">
+                                    </div>
+                                    <input type="hidden" name="username" value="{{data.user}}" />
                                 </div>
-                                <div class="input-field col s2 range-field">
-                                    <i class="material-icons prefix">stars</i>
-                                    <!-- <input id="icon_telephone" type="tel" class="validate"> -->
-                                    <!-- <label for="icon_telephone">Telephone</label> -->
-
-                                    <input id="score_prefix" type="number" step="0.5" min="0.0" max="5.0" value="0"
-                                           name="moviescore">
-                                    <!-- <label for="score_prefix" class="active">Calificación</label> -->
-
-                                </div>
+                                <button type="submit" class="btn waves-effect waves-light" name="action">¡Calificar!
+                                    <i class="material-icons">done</i>
+                                </button>
                             </div>
-                            <button type="submit" class="btn waves-effect waves-light" name="action">¡Calificar!
-                                <i class="material-icons">done</i>
-                            </button>
-                        </div>
                         </form>
                     </div>
                 </div>

@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/css/materialize.min.css">
         <!-- Compiled and minified JavaScript -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/js/materialize.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
     </head>
     <body>
         <div class="container">
@@ -26,7 +27,8 @@
                         <form action="/get-movies" method="post">
                             <div class="input-field offset-s4">
                                 <i class="material-icons prefix">perm_identity</i>
-                                <input id="nombre" type="text" class="validate" value="Tu nombre" name="username">
+                                <input id="nombre" type="text" class="validate" name="username">
+                                <label for="nombre">Tu nombre</label>
                                 <input type="submit" class="btn btn-default" value="Ver películas">
                             </div>
                         </form>
@@ -34,5 +36,6 @@
                 </div>
             </div>
         </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/js/materialize.min.js"></script>
     </body>
 </html>

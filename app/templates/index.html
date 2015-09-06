@@ -22,18 +22,15 @@
                     <p align="center">
                         Bienvenido:
                     </p>
-                    <div class="input-field offset-s4">
-                        <i class="material-icons prefix">perm_identity</i>
-                        <input id="nombre" type="text" class="validate" value="Tu nombre">
+                    <div class="form-group">
+                        <form action="/get-movies" method="post">
+                            <div class="input-field offset-s4">
+                                <i class="material-icons prefix">perm_identity</i>
+                                <input id="nombre" type="text" class="validate" value="Tu nombre" name="username">
+                                <input type="submit" class="btn btn-default" value="Ver películas">
+                            </div>
+                        </form>
                     </div>
-                    <p align="center">
-                        Elige tus peliculas:
-                    </p>
-                    <div class="input-field">
-                        <i class="material-icons prefix">theaters</i>
-                        <input type="text" class="validate">
-                    </div>
-
                 </div>
             </div>
         </div>

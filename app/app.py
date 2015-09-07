@@ -7,8 +7,6 @@ app = Flask(__name__)
 db = shelve.open("./db/movielens_100k.db")
 
 def get_data(user):
-    print db.cache
-    db.sync()
     if str(user) in db:
         return {"user" : user, "movies" : db[str(user)]}
     return {"user" : user}
@@ -18,7 +16,6 @@ def set_data(user, movie, score):
     db_user = db[user]
     db_user[movie] = score
     db[user] = db_user
-    print db[user]
 
 @app.route("/")
 def index():

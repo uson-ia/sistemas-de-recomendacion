@@ -9,7 +9,7 @@ db = shelve.open("./db/movielens_100k.db")
 def get_data(user):
     print db.cache
     db.sync()
-    if user in db:
+    if str(user) in db:
         return {"user" : user, "movies" : db[user]}
     return {"user" : user}
 

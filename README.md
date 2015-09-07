@@ -46,7 +46,7 @@ Los siguientes son puntos deseables en los que el proyecto podría mejorar. Si t
 Para correr la aplicacion:
 - Crear el entorno virtual dentro del repositorio:
 
-    `virtualenv mientorno`
+    `virtualenv mientorno (deactivate para salirte)`
 - Activar el entorno:
 
     `source mientorno/bin/activate`

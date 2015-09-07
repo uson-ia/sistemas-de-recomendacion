@@ -7,8 +7,8 @@ app = Flask(__name__)
 db = shelve.open("./db/movielens_100k.db")
 
 def get_data(user):
-    if str(user) in db:
-        return {"user" : user, "movies" : db[str(user)]}
+    if user in db:
+        return {"user" : user, "movies" : db[user]}
     return {"user" : user}
 
 def set_data(user, movie, score):
@@ -25,7 +25,7 @@ def index():
 def get_movies():
     data = {}
     if request.method == "POST":
-        data = get_data(request.form["username"])
+        data = get_data(str(request.form["username"]))
     return render_template("movies.html", data=data)
 
 @app.route("/add-score", methods=["POST"])

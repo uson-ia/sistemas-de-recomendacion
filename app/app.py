@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 import shelve
 import atexit
+import tmdbsimple as tmdb
 
 app = Flask(__name__)
 
@@ -30,10 +31,14 @@ def get_movies():
 
 @app.route("/add-score", methods=["POST"])
 def add_score():
+    tmdb.API_KEY = "f5fb780312d3eef86ddf28bf083c9887"
     username = str(request.form["username"])
     moviename = str(request.form["moviename"])
     moviescore = float(request.form["moviescore"])
-    set_data(username, moviename, moviescore)
+    search = tmdb.Search()
+    response = search.movie(query = moviename.split("(")[0])
+    if response['results']:
+        set_data(username, moviename, moviescore)
     return render_template("redirect-user.html", data=username)
 
 def exit_handler():

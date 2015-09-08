@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for
+import os
+from flask import Flask, render_template, request, session, redirect, url_for
 import shelve
 import atexit
 import recommendations
@@ -24,14 +25,21 @@ def set_data(user, movie, score):
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    if session.get("username", None):
+        return get_movies()
+    else:
+        return render_template("index.html")
 
 
 @app.route("/get-movies", methods=["GET", "POST"])
 def get_movies():
     data = {}
-    if request.method == "POST":
-        data = get_data(str(request.form["username"]))
+    if session.get("username", None):
+        data = get_data(session["username"])
+    elif request.method == "POST":
+        username = str(request.form["username"])
+        session["username"] = username
+        data = get_data(username)
     return render_template("movies.html", data=data)
 
 
@@ -62,4 +70,7 @@ def exit_handler():
 atexit.register(exit_handler)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.secret_key = os.urandom(24)
+    app.debug = True
+
+    app.run()

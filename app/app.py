@@ -3,7 +3,7 @@ import os
 from flask import Flask, render_template, request, session, redirect, url_for
 import shelve
 import atexit
-import recommendations
+import recommendations_opt as recommendations
 import tmdbsimple as tmdb
 
 app = Flask(__name__)
@@ -48,7 +48,7 @@ def get_movies():
 def rec():
     if request.method == 'POST':
         username = str(request.form["username"])
-        recs = recommendations.get_recommendations(db, username)[:30]
+        recs = recommendations.get_recommendations(db, username)
         return render_template("movies.html", data=recs, rec=True)
 
 

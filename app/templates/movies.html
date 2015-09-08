@@ -14,7 +14,7 @@
 
             <div class="col s12">
                 <div class="card blue-grey darken-1">
-                    <form action="/add-score" method="post">
+                    <form action="/add-score" method="post" align="center">
                         <div class="card-content white-text">
                             <span class="card-title">¡Califica una película!</span>
                             <div class="row">
@@ -33,11 +33,18 @@
                             <button type="submit" class="btn waves-effect waves-light" name="action">¡Calificar!
                                 <i class="material-icons">done</i>
                             </button>
-                            <button type="submit" class="btn waves-effect waves-light" name="action" value ="Ver recomendaciones">¡Recomiendame!
-                                <i class="material-icons">done</i>
-                            </button>
                         </div>
                     </form>
+
+                    <div class="card-content white-text">
+                        <form action="/rec" method="post" align="center">
+                            <input type="hidden" name="username" value="{{data.user}}">
+                            <button type="submit" class="btn waves-effect waves-light" value ="Ver recomendaciones">¡Recomiendame!
+                                <i class="material-icons">done</i>
+                            </button>
+                        </form>
+                    </div>
+
                 </div>
             </div>
 
@@ -52,6 +59,35 @@
             <!--         <a href="#">This is a link</a> -->
             <!--     </div> -->
             <!-- </div> -->
+
+            {% if rec is defined %}
+            <h4 class="col s12 header">Te recomendamos ver:</h4>
+            <div class="panel panel-default">
+                <table class="table bordered">
+                    <colgroup>
+                        <col span="1" style="width: 10%">
+                        <col span="1" style="width: 5%">
+                        <col span="1" style="width: 85%">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>Puntuación</th>
+                            <th></th>
+                            <th>Película</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for movie, score in data %}
+                        <tr>
+                            <td><span class="stars">{{ score }}</span></td>
+                            <td>{{score}}</td>
+                            <td>{{ movie }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
 
             {% if data.movies is defined %}
             <h4 class="col s12 header">Películas calificadas</h4>

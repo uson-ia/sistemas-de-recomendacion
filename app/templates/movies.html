@@ -110,7 +110,7 @@
                         <tr>
                             <td><span class="stars">{{ score }}</span></td>
                             <td>{{score}}</td>
-                            <td>{{ movie }}</td>
+                            <td>{{ movie.decode("utf-8") }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>

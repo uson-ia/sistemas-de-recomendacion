@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 from flask import Flask, render_template, request, session, redirect, url_for
 import shelve
@@ -53,8 +54,8 @@ def rec():
 
 @app.route("/add-score", methods=["POST"])
 def add_score():
-    username = str(request.form["username"])
-    moviename = str(request.form["moviename"])
+    username = request.form["username"].encode('utf-8')
+    moviename = request.form["moviename"].encode('utf-8')
     if moviename:
         moviescore = float(request.form["moviescore"])
         search = tmdb.Search()

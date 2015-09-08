@@ -53,14 +53,14 @@ def rec():
 
 @app.route("/add-score", methods=["POST"])
 def add_score():
-    tmdb.API_KEY = "f5fb780312d3eef86ddf28bf083c9887"
     username = str(request.form["username"])
     moviename = str(request.form["moviename"])
-    moviescore = float(request.form["moviescore"])
-    search = tmdb.Search()
-    response = search.movie(query=moviename.split("(")[0])
-    if response['results']:
-        set_data(username, moviename, moviescore)
+    if moviename:
+        moviescore = float(request.form["moviescore"])
+        search = tmdb.Search()
+        response = search.movie(query=moviename.split("(")[0])
+        if response['results']:
+            set_data(username, moviename, moviescore)
     return render_template("redirect-user.html", data=username)
 
 
@@ -73,4 +73,5 @@ if __name__ == '__main__':
     app.secret_key = os.urandom(24)
     app.debug = True
 
+    tmdb.API_KEY = "f5fb780312d3eef86ddf28bf083c9887"
     app.run()

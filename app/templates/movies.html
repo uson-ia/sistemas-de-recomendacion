@@ -39,7 +39,8 @@
                     <div class="card-content white-text">
                         <form action="/rec" method="post" align="center">
                             <input type="hidden" name="username" value="{{data.user}}">
-                            <button type="submit" class="btn waves-effect waves-light" value ="Ver recomendaciones">¡Recomiendame!
+                            <button type="submit" class="btn waves-effect waves-light"
+                                    value ="Ver recomendaciones" onclick="loading();">¡Recomiendame!
                                 <i class="material-icons">done</i>
                             </button>
                         </form>
@@ -48,17 +49,9 @@
                 </div>
             </div>
 
-            <!-- <div class="card blue-grey darken-1"> -->
-            <!--     <div class="card-content white-text"> -->
-            <!--         <span class="card-title">Card Title</span> -->
-            <!--         <p>I am a very simple card. I am good at containing small bits of information. -->
-            <!--             I am convenient because I require little markup to use effectively.</p> -->
-            <!--     </div> -->
-            <!--     <div class="card-action"> -->
-            <!--         <a href="#">This is a link</a> -->
-            <!--         <a href="#">This is a link</a> -->
-            <!--     </div> -->
-            <!-- </div> -->
+            <div class="progress" id="loading-recommendations" style="display:none;">
+                <div class="indeterminate"></div>
+            </div>
 
             {% if rec is defined %}
             <h4 class="col s12 header">Te recomendamos ver:</h4>
@@ -125,6 +118,11 @@
      };
 
      $('.stars').stars();
+
+     function loading(){
+         var e = document.getElementById("loading-recommendations");
+         e.style.display = 'block';
+     }
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/js/materialize.min.js"></script>
 {% endblock %}

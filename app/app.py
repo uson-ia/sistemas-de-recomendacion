@@ -39,9 +39,7 @@ def get_movies():
 def rec():
     if request.method == 'POST':
         username = str(request.form["username"])
-        prefs = shelve.open("./db/movielens_100k.db")
-        recs = recommendations.get_recommendations(prefs, username)[:30]
-        prefs.close()
+        recs = recommendations.get_recommendations(db, username)[:30]
         return render_template("movies.html", data=recs, rec=True)
 
 

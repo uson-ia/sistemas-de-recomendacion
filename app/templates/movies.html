@@ -36,8 +36,8 @@
                         </div>
                     </form>
 
-                    <div class="card-content white-text">
-                        <form action="/rec" method="post" align="center">
+                    <div class="card-content white-text ui-widget">
+                        <form action="/recommendations" method="get" align="center">
                             <input type="hidden" name="username" value="{{data.user}}">
                             <button type="submit" class="btn waves-effect waves-light"
                                     value ="Ver recomendaciones" onclick="loading();">¡Recomiendame!
@@ -54,8 +54,9 @@
             </div>
 
             {% if rec is defined %}
+            {% if data %}
             <h4 class="col s12 header">Te recomendamos ver:</h4>
-            <div class="panel panel-default">
+            <div class="panel panel-default block">
                 <table class="table bordered">
                     <colgroup>
                         <col span="1" style="width: 10%">
@@ -80,6 +81,20 @@
                     </tbody>
                 </table>
             </div>
+            {% else %}
+             <div class="panel panel-default col s12 card deep-orange accent-2">
+                <p class="flow-text center">Aún no te agarro el feeling compadre</p>
+                <p class="flow-text center">Califica más peliculas para recomendarte algo sabroso</p>
+             </div>
+            {% endif %}
+            {% endif %}
+
+            <!-- Mostrar este bloque cuando un usuario intente calificar una pelicula que no esté en el dataset or something like that -->
+            {% if False %}
+             <div class="panel panel-default col s12 card deep-orange accent-2">
+                <p class="flow-text center"> Lo sentimos! No pudimos reconocer la pelicula que ingresaste. </p>
+                <p class="flow-text center"> Intenta con algo menos hipster</p>
+             </div>
             {% endif %}
 
             {% if data.movies is defined %}

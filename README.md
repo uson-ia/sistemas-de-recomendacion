@@ -26,7 +26,7 @@ Los datasets deben guardarse dentro de una carpeta con el nombre `datasets` dent
 Si sólo quieres descargar los datos de prueba (sin cargarlos a un diccionario) puedes usar el siguiente comando:   `python -m downloader [dataset_url]` 
 Para checar estos y otros datasets puedes visitar http://grouplens.org/datasets/movielens/
 
-#### 2. Correr la aplicación web
+#### 2. Instalar dependencias la aplicación web
 
 Ejecuta los siguientes comandos (en la raíz del proyecto)
 - **Instalar `pip`**
@@ -46,14 +46,24 @@ Ejecuta los siguientes comandos (en la raíz del proyecto)
     En caso de que te quieras salir del entorno, puedes correr el comando: `deactivate` 
 
 - **Instalar las dependencias** 
-    `pip install -r requirements.txt` 
-    
-- **Correr el servidor**
+    `pip install -r requirements.txt`
+     Es probable que para que scipy se compile/instale bien requiera tener un compilador de fortran instalado y alcanzable desde el PATH.
+     Una opción es el compilador de GNU `gfortran`. Puede que ya lo tengas si haz instalado `gcc`
+
+#### 3. Correr la aplicación web
+Cada vez que se
+ - **Activar el entorno**
+    Probablemente lo hiciste cuando instalaste las dependencias, pero esto se tiene que hacer cada vez que enciendas el servidor
+    `source ia-sisrec-env/bin/activate`
+ 
+- **Levantar el servidor**
     ```
     cd app
     python -m app
     ```
- 
+
+Listo! Si todo salió bien deberías de estar leyendo un mensaje diciéndote que te dirijas a http://127.0.0.1:5000/ - ahi está la aplicación
+Si sucede algún error en estos pasos intenta actualizar las dependencias desde el archivo `requirements.txt` (ver sección anterior) o agregar un issue en el repositorio de GitHub
 
 ## Agregar dependencias
 Si instalan otros plugins hay que agregarlos al archivo de dependencias para que los demas las puedan instalar también.

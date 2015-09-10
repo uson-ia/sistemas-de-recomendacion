@@ -44,10 +44,10 @@ def get_movies():
     return render_template("movies.html", data=data)
 
 
-@app.route("/rec", methods=["POST"])
-def rec():
-    if request.method == 'POST':
-        username = str(request.form["username"])
+@app.route("/recommendations", methods=["GET"])
+def recommend():
+    if request.method == 'GET':
+        username = request.args.get("username", "").encode('utf-8')
         recs = recommendations.get_recommendations(db, username)
         return render_template("movies.html", data=recs, rec=True)
 
@@ -63,7 +63,6 @@ def add_score():
         if response['results']:
             set_data(username, moviename, moviescore)
     return render_template("redirect-user.html", data=username)
-
 
 def exit_handler():
     db.close()

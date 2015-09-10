@@ -31,6 +31,9 @@ def top_critics(db, person, similarity, n=30):
     return recommend_critics(db, person, similarity)[:n]
 
 def get_recommendations(db, person, similarity=pearson_similarity, n=30, m=30):
+    if not person:
+        return None
+
     totals = {}
     similarity_sums = {}
     for simil, critic in iter(top_critics(db, person, similarity, n)):

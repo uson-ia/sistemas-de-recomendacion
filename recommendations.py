@@ -155,6 +155,40 @@ def sim_pearson(prefs,p1,p2):
     return r
 
 #haciendo pruebas con la funcion sim_pearson
+#esta funcion regresa un valor entre -1 y 1
+#donde 1 sicnifica que dos personas estan exactamente en el mismo raiting
 print "la impresion con al funcion sim_pearson"
 print sim_pearson(critics,'Lisa Rose','Gene Seymour')
 print sim_pearson(critics,'Lisa Rose','Toby')
+
+#haciendo pruebas haora con la distancia manhattan entre dos personas
+def sum_manhattan(prefs,person1,person2):
+    total = 0
+    #asumimos que la persona1 esta en el eje de las x
+    # y que la persona2 esta en el de las y
+    x=prefs[person1]
+    y=prefs[person2]
+
+    for pelicula in x:
+        if pelicula in y:
+            total += abs(x[pelicula]-y[pelicula])
+    return total
+
+# me da balores muy grandes no se por que?
+print "haciendo pruebas con la distancia manhattan"
+print sum_manhattan(critics,'Lisa Rose','Gene Seymour')
+
+
+# devuelve los mejores resultados de la perosna desde el diccionario de preferencias
+#numero de resultados y la funcion de similitud para parametrso opcionales
+
+def topMatches(prefs,person,n=5,similarity=sim_pearson):
+    scores=[(similarity(prefs,person,other),other) for other in prefs if other!=person]
+
+            #volver a ordenar la lista para que los puntajes mas
+            #altos aparecen en la parte superior
+    scores.sort()
+    scores.reverse()
+    return scores[0:n]
+
+print topMatches(critics,'Lisa Rose',n=5)

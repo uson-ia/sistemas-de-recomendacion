@@ -23,9 +23,10 @@ critics = {'Lisa Rose': {'Lady in the Water': 2.5, 'Snakes on a Plane': 3.5,
  'You, Me and Dupree': 2.0},
 'Jack Matthews': {'Lady in the Water': 3.0, 'Snakes on a Plane': 4.0,
  'The Night Listener': 3.0, 'Superman Returns': 5.0, 'You, Me and Dupree': 3.5},
-'Toby': {'Snakes on a Plane':4.5,'You, Me and Dupree':1.0,'Superman Returns':4.0}}
+'Toby': {'Snakes on a Plane':4.5,'You, Me and Dupree':1.0,'Superman Returns':4.0},
+'Juan Manuel': {'Snakes on a Plane':4.5,'You, Me and Dupree':1.0,'Superman Returns':4.0}}
 
-# Devuelve una puntuación de similitud basada en la distancia por persona y persona
+# Devuelve una puntuación de similitud basada en la distancia por person1 y person2
 
 def sim_distance(prefs, person1, person2):
 	# Obtener la lista de shared_items
@@ -44,5 +45,40 @@ def sim_distance(prefs, person1, person2):
 
 	return 1.0 / (1.0 + sum_of_squares)
 
+# Devuelve el coeficiente de correlación de Pearson para person1 y person2
 
+def sim_pearson(prefs, person1, person2):
+	# Obtener la lista de elementos mutuamente calificados
+	si = {}
+	for item in prefs[person1]:
+		if item in prefs[person2]:
+			si[item] = 1
+
+	# Encuentra el número de elementos
+	n = len(si)
+
+	# Si no hay clasificaciones en común, devolver 0
+	if n == 0:
+		return 0
+
+	# Suma todas las preferencias
+	sum1 = sum([prefs[person1][it] for it in si])
+	sum2 = sum([prefs[person2][it] for it in si])
+
+	# Suma los cuadrados
+	sum1Sq = sum([pow(prefs[person1][it], 2) for it in si])
+	sum2Sq = sum([pow(prefs[person2][it], 2) for it in si])
+
+	# Suma los productos
+	pSum = sum([prefs[person1][it] * prefs[person2][it] for it in si])
+
+	# Calcular la puntuación de Pearson
+	num = pSum - (sum1 * sum2 / n)
+	den = sqrt((sum1Sq - pow(sum1, 2) / n) * (sum2Sq - pow(sum2, 2) / n))
 	
+	if den == 0:
+		return 0
+
+	r = num / den
+
+	return r

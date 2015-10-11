@@ -26,7 +26,6 @@ critics = {'Lisa Rose': {'Lady in the Water': 2.5, 'Snakes on a Plane': 3.5,
            'Toby': {'Snakes on a Plane': 4.5, 'You, Me and Dupree': 1.0, 'Superman Returns': 4.0},
            'Juan Manuel': {'Snakes on a Plane': 4.5, 'You, Me and Dupree': 1.0, 'Superman Returns': 4.0}}
 
-
 # Devuelve una puntuación de similitud basada en la distancia para person1 y person2.
 
 def sim_distance(prefs, person1, person2):
@@ -45,7 +44,6 @@ def sim_distance(prefs, person1, person2):
                           for item in prefs[person1] if item in prefs[person2]])
 
     return 1.0 / (1.0 + sum_of_squares)
-
 
 # Devuelve el coeficiente de correlación de Pearson para person1 y person2.
 
@@ -81,15 +79,14 @@ def sim_pearson(prefs, person1, person2):
     if den == 0:
         return 0
 
-    r = num / den
+    r = num/den
 
     return r
-
 
 # Devuelve los mejores partidos de la persona del diccionario prefs.
 # El número de resultados y la función de similitud son parametros opcionales.
 
-def topMatches(prefs, person, n=5, similarity=sim_pearson):
+def topMatches(prefs, person, n=5, similarity = sim_pearson):
     scores = [(similarity(prefs, person, other), other)
               for other in prefs if other != person]
 
@@ -99,11 +96,10 @@ def topMatches(prefs, person, n=5, similarity=sim_pearson):
 
     return scores[0:n]
 
-
 # Obtiene recomendaciones para una persona mediante el uso de una media ponderada
 # Del ranking de todos los demás usuarios.
 
-def getRecommendations(prefs, person, similarity=sim_pearson):
+def getRecommendations(prefs, person, similarity = sim_pearson):
     totals = {}
     simSums = {}
     for other in prefs:
@@ -133,3 +129,16 @@ def getRecommendations(prefs, person, similarity=sim_pearson):
     rankings.sort()
     rankings.reverse()
     return rankings
+
+def transformPrefs(prefs):
+    result = {}
+    for person in prefs:
+        for item in prefs[person]:
+            result.setdefault(item, {})
+
+            # Intercambiar item y persona
+            result[item][person] = prefs[person][item]
+
+    return result
+
+

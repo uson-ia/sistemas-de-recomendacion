@@ -3,6 +3,7 @@
 __author__ = 'JuanManuel'
 
 from math import sqrt
+import pydelicious
 
 # Un diccionario de los críticos de cine y sus calificaciones de un pequeño
 # conjunto de películas.

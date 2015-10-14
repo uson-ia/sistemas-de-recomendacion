@@ -160,5 +160,36 @@ def calculateSimilarItems(prefs, n = 10):
         result[item] = scores
 
     return result
-        
 
+def getRecommendedItems(prefs, itemMatch, user):
+    userRatings = prefs[user]
+    scores = {}
+    totalSim = {}
+
+    # Se cicla por los items calificados por este usuario
+    for (item, rating) in userRatings.items():
+
+        # Se cicla por los items parecidos a este
+        for (similarity, item2) in itemMatch[item]:
+            
+            # Ignora si este usuario ya califico este item
+            if item2 in userRatings:
+                continue
+
+            # Suma ponderada de las similitudes //REVISA BIEN ESTO
+            scores.setdefault(item2, 0)
+            scores[item2] += similarity * rating
+
+            # Suma de todas las similitudes
+            totalSim.setdefault(item2, 0)
+            totalSim[item2] += similarity
+
+    # Dividir cada calificacion total por el total de la suma ponderada para obtener
+    # un promedio
+    rankings = [(score / totalSim[item], item) for item, score in scores.items()]
+
+    # Regresa las clasificaciones de la mas alta a la mas baja
+    rankings.sort()
+    rankings.reverse()
+
+    return rankings 

@@ -141,5 +141,3 @@ def transformPrefs(prefs):
             result[item][person] = prefs[person][item]
 
     return result
-
-

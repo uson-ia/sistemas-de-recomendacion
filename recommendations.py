@@ -141,3 +141,24 @@ def transformPrefs(prefs):
             result[item][person] = prefs[person][item]
 
     return result
+
+def calculateSimilarItems(prefs, n = 10):
+    # Crear un diccionario de items que muestre otros items
+    # similares
+    result = {}
+
+    # Invertir la matriz de preferencia para que sea item-centric
+    itemPrefs = transformPrefs(prefs)
+    c = 0
+    for item in itemPrefs:
+        # Actualizaciones de estado para grandes conjuntos de datos
+        c += 1
+        if c % 100 == 0:
+            print "%d / %d" % (c, len(itemPrefs))
+        # Encuentra los items más similares a este
+        scores = topMatches(itemPrefs, item, n = n, similarity = sim_distance)
+        result[item] = scores
+
+    return result
+        
+

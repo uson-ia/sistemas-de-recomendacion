@@ -193,3 +193,20 @@ def getRecommendedItems(prefs, itemMatch, user):
     rankings.reverse()
 
     return rankings 
+
+def loadMovieLens(path='/C:\Users\JuanManuel\PycharmProjects\SR'):
+
+    # Obtener títulos de películas
+    movies = {}
+    for line in open(path + '\u.item'):
+        (id, title) = line.split('|')[0:2]
+        movies[id] = title
+
+    # Cargar datos
+    prefs = {}
+    for line in open(path + '\u.data'):
+        (user, movieid, rating, ts) = line.split('\t')
+        prefs.setdefault(user, {})
+        prefs[user][movies[movieid]] = float(rating)
+
+    return prefs

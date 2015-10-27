@@ -92,12 +92,12 @@ def get_shared_items(prefs, person1, person2):
 
 """
 Funcion: sim_distance(prefs, person1, person2)
-Descripcion: Se obtiene una puntuación de similitud basada en la distancia de person1 y person2.
+Descripcion: Se obtiene la similiridad con la distancia de person1 y person2.
 Parametros:
 prefs   - Diccionario que contiene el nombre de criticos de peliculas, peliculas y su calificacion.
 person1 - Elemento del diccionario el cual es un critico de peliculas y contiene peliculas ademas de su calificacion.
 person2 - Elemento del diccionario el cual es un critico de peliculas y contiene peliculas ademas de su calificacion.
-Valor de retorno: Devuelve una puntuación de similitud basada en la distancia de person1 y person2.
+Valor de retorno: Devuelve la similiridad con la distancia de person1 y person2.
 """
 def sim_distance(prefs, person1, person2):
     # Se obtiene la lista de shared_items
@@ -107,47 +107,51 @@ def sim_distance(prefs, person1, person2):
     if len(shared_items) == 0:
         return 0
 
-    # Sumamos el cuadrado de todas las diferencias (cada distancia)
+    # Se suma el cuadrado de todas las diferencias (cada distancia)
     sum_of_squares = sum([pow(prefs[person1][item] - prefs[person2][item], 2)
                           for item in prefs[person1] if item in prefs[person2]])
 
     return 1.0 / (1.0 + sum_of_squares)
-
-# Devuelve el coeficiente de correlación de Pearson para person1 y person2.
-
+    
+"""
+Funcion: sim_pearson(prefs, person1, person2)
+Descripcion: Se obtiene la similiridad con en el score de pearson de person1 y person2.
+Parametros:
+prefs   - Diccionario que contiene el nombre de criticos de peliculas, peliculas y su calificacion.
+person1 - Elemento del diccionario el cual es un critico de peliculas y contiene peliculas ademas de su calificacion.
+person2 - Elemento del diccionario el cual es un critico de peliculas y contiene peliculas ademas de su calificacion.
+Valor de retorno: Devuelve la similiridad con en el score de pearson de person1 y person2.
+"""
 def sim_pearson(prefs, person1, person2):
-    # Obtener la lista de shared_items
-    si = {}
-    for item in prefs[person1]:
-        if item in prefs[person2]:
-            si[item] = 1
+    # Se obtiene la lista de shared_items
+    shared_items = get_shared_items(prefs, person1, person2)
 
-    # Encuentra el número de elementos
+    # Se obtiene el numero de items en común
     n = len(si)
 
-    # Si no tienen calificaciones en común, devolver 0
+    # Si no se tienen items en común, se devuelve 0
     if n == 0:
         return 0
 
-    # Suma todas las preferencias
-    sum1 = sum([prefs[person1][it] for it in si])
-    sum2 = sum([prefs[person2][it] for it in si])
+    # Se suman las preferencias de cada uno (las que tienen en comun)
+    sum1 = sum([prefs[person1][it] for it in shared_items])
+    sum2 = sum([prefs[person2][it] for it in shared_items])
 
-    # Suma los cuadrados
-    sum1Sq = sum([pow(prefs[person1][it], 2) for it in si])
-    sum2Sq = sum([pow(prefs[person2][it], 2) for it in si])
+    # Se suman las preferencias de cada uno (las que tienen en comun) al cuadrado
+    sum1Sq = sum([pow(prefs[person1][it], 2) for it in shared_items])
+    sum2Sq = sum([pow(prefs[person2][it], 2) for it in shared_items])
 
-    # Suma los productos
-    pSum = sum([prefs[person1][it] * prefs[person2][it] for it in si])
+    # Se suman los productos de cada preferencia en comun
+    pSum = sum([prefs[person1][it] * prefs[person2][it] for it in shared_items])
 
-    # Calcular la puntuación de Pearson
+    # Se calcula el score de pearson
     num = pSum - (sum1 * sum2 / n)
     den = sqrt((sum1Sq - pow(sum1, 2) / n) * (sum2Sq - pow(sum2, 2) / n))
 
     if den == 0:
         return 0
 
-    r = num/den
+    r = num / den
 
     return r
 

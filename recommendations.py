@@ -5,8 +5,9 @@ __author__ = 'JuanManuel'
 from math import sqrt
 import pydelicious
 
-# Un diccionario de críticos del cine y sus calificaciones de un pequeño
-# conjunto de películas.
+"""
+Un diccionario de críticos del cine y sus calificaciones de un pequeño conjunto de películas.
+"""
 
 critics = {
     "Lisa Rose" : 
@@ -213,18 +214,26 @@ def getRecommendations(prefs, person, similarity = sim_pearson):
     # Se crea una lista normalizada
     rankings = [(total / simSums[item], item) for item, total in totals.items()]
 
-    # Devuelve la lista con cada pelicula y su score de manera ordenada
+    # Devuelve una lista con cada pelicula y su score de manera descendente
     rankings.sort()
     rankings.reverse()
     return rankings
 
+"""
+Funcion: transformPrefs(prefs)
+Descripcion: Se modifica el diccionario de prefs para utilizar las funciones ya programadas pero ahora 
+             en vez de buscar similitudes entre personas se buscan entre peliculas.
+Parametros:
+prefs - Diccionario que contiene el nombre de criticos de peliculas, peliculas y su calificacion.
+Valor de retorno: Devuelve un diccionario modficado donde ahora se busca por medio de peliculas.
+"""
 def transformPrefs(prefs):
     result = {}
     for person in prefs:
         for item in prefs[person]:
             result.setdefault(item, {})
 
-            # Intercambiar item y persona
+            # Se intercambia un item y una persona
             result[item][person] = prefs[person][item]
 
     return result
@@ -340,6 +349,13 @@ def main():
     import recommendations
     recommendations.getRecommendations(recommendations.critics, 'Toby')
     recommendations.getRecommendations(recommendations.critics, 'Toby', similarity=recommendations.sim_distance)
+    """
+
+    """
+    print "Ejemplo 7"
+    import recommendations
+    movies = recommendations.transformPrefs(recommendations.critics)
+    recommendations.topMatches(movies, 'Superman Returns')
     """
 
 if __name__ == "__main__":

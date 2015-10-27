@@ -80,10 +80,9 @@ Parametros:
 prefs   - Diccionario que contiene el nombre de criticos de peliculas, peliculas y su calificacion.
 person1 - Elemento del diccionario el cual es un critico de peliculas y contiene peliculas ademas de su calificacion.
 person2 - Elemento del diccionario el cual es un critico de peliculas y contiene peliculas ademas de su calificacion.
-Valor de retorno: Devuelve la lista de peliculas en comun entre ambas personas
+Valor de retorno: Devuelve la lista de peliculas en comun entre ambas personas.
 """
 def get_shared_items(prefs, person1, person2):
-    
     shared_items = {}
     for item in prefs[person1]:
         if item in prefs[person2]:
@@ -91,18 +90,24 @@ def get_shared_items(prefs, person1, person2):
 
     return shared_items
 
+"""
+Funcion: sim_distance(prefs, person1, person2)
+Descripcion: Se obtiene una puntuación de similitud basada en la distancia de person1 y person2.
+Parametros:
+prefs   - Diccionario que contiene el nombre de criticos de peliculas, peliculas y su calificacion.
+person1 - Elemento del diccionario el cual es un critico de peliculas y contiene peliculas ademas de su calificacion.
+person2 - Elemento del diccionario el cual es un critico de peliculas y contiene peliculas ademas de su calificacion.
+Valor de retorno: Devuelve una puntuación de similitud basada en la distancia de person1 y person2.
+"""
 def sim_distance(prefs, person1, person2):
-    # Obtener la lista de shared_items
-    si = {}
-    for item in prefs[person1]:
-        if item in prefs[person2]:
-            si[item] = 1
+    # Se obtiene la lista de shared_items
+    shared_items = get_shared_items(prefs, person1, person2)
 
-    # Si no tienen calificaciones en común, devolver 0
-    if len(si) == 0:
+    # Si no tienen items en común, se devuelve 0
+    if len(shared_items) == 0:
         return 0
 
-    # Suma los cuadrados de todas las diferencias
+    # Sumamos el cuadrado de todas las diferencias (cada distancia)
     sum_of_squares = sum([pow(prefs[person1][item] - prefs[person2][item], 2)
                           for item in prefs[person1] if item in prefs[person2]])
 
@@ -294,7 +299,7 @@ def main():
 
     """
     print "Ejemplo 3"
-    reload(recommendations)
+    import recommendations
     recommendations.sim_distance(recommendations.critics, 'Lisa Rose', 'Gene Seymour')
     """
 

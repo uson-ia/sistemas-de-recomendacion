@@ -5,29 +5,91 @@ __author__ = 'JuanManuel'
 from math import sqrt
 import pydelicious
 
-# Un diccionario de los críticos de cine y sus calificaciones de un pequeño
+# Un diccionario de críticos del cine y sus calificaciones de un pequeño
 # conjunto de películas.
 
-critics = {'Lisa Rose': {'Lady in the Water': 2.5, 'Snakes on a Plane': 3.5,
-                         'Just My Luck': 3.0, 'Superman Returns': 3.5, 'You, Me and Dupree': 2.5,
-                         'The Night Listener': 3.0},
-           'Gene Seymour': {'Lady in the Water': 3.0, 'Snakes on a Plane': 3.5,
-                            'Just My Luck': 1.5, 'Superman Returns': 5.0, 'The Night Listener': 3.0,
-                            'You, Me and Dupree': 3.5},
-           'Michael Phillips': {'Lady in the Water': 2.5, 'Snakes on a Plane': 3.0,
-                                'Superman Returns': 3.5, 'The Night Listener': 4.0},
-           'Claudia Puig': {'Snakes on a Plane': 3.5, 'Just My Luck': 3.0,
-                            'The Night Listener': 4.5, 'Superman Returns': 4.0,
-                            'You, Me and Dupree': 2.5},
-           'Mick LaSalle': {'Lady in the Water': 3.0, 'Snakes on a Plane': 4.0,
-                            'Just My Luck': 2.0, 'Superman Returns': 3.0, 'The Night Listener': 3.0,
-                            'You, Me and Dupree': 2.0},
-           'Jack Matthews': {'Lady in the Water': 3.0, 'Snakes on a Plane': 4.0,
-                             'The Night Listener': 3.0, 'Superman Returns': 5.0, 'You, Me and Dupree': 3.5},
-           'Toby': {'Snakes on a Plane': 4.5, 'You, Me and Dupree': 1.0, 'Superman Returns': 4.0},
-           'Juan Manuel': {'Snakes on a Plane': 4.5, 'You, Me and Dupree': 1.0, 'Superman Returns': 4.0}}
+critics = {
+    "Lisa Rose" : 
+    {
+        "Lady in the Water"  : 2.5,
+        "Snakes on a Plane"  : 3.5,
+        "Just My Luck"       : 3.0,
+        "Superman Returns"   : 3.5,
+        "You, Me and Dupree" : 2.5,
+        "The Night Listener" : 3.0
+    },
+    "Gene Seymour" : 
+    {
+        "Lady in the Water"  : 3.0,
+        "Snakes on a Plane"  : 3.5,
+        "Just My Luck"       : 1.5,
+        "Superman Returns"   : 5.0,
+        "The Night Listener" : 3.0,
+        "You, Me and Dupree" : 3.5
+    },
+    "Michael Phillips" : 
+    {
+        "Lady in the Water"  : 2.5,
+        "Snakes on a Plane"  : 3.0,
+        "Superman Returns"   : 3.5,
+        "The Night Listener" : 4.0
+    },
+    "Claudia Puig" : 
+    {
+        "You, Me and Dupree" : 2.5,
+        "Snakes on a Plane"  : 3.5,
+        "Just My Luck"       : 3.0,
+        "Superman Returns"   : 4.0,
+        "The Night Listener" : 4.5
+    },
+    "Mick LaSalle" : 
+    {
+        "Lady in the Water"  : 3.0,
+        "Snakes on a Plane"  : 4.0,
+        "Just My Luck"       : 2.0,
+        "Superman Returns"   : 3.0,
+        "The Night Listener" : 3.0,
+        "You, Me and Dupree" : 2.0
+    },
+    "Jack Matthews" : 
+    {
+        "Lady in the Water"  : 3.0,
+        "Snakes on a Plane"  : 4.0,
+        "You, Me and Dupree" : 3.5,
+        "Superman Returns"   : 5.0,
+        "The Night Listener" : 3.0
+    },
+    "Toby" : 
+    {
+        "Snakes on a Plane"  : 4.5,
+        "You, Me and Dupree" : 1.0,
+        "Superman Returns"   : 4.0
+    },
+    "Juan Manuel" : 
+    {
+        "Snakes on a Plane"  : 4.5,
+        "You, Me and Dupree" : 1.0,
+        "Superman Returns"   : 4.0
+    }
+}
 
-# Devuelve una puntuación de similitud basada en la distancia para person1 y person2.
+"""
+Funcion: get_shared_items(prefs, person1, person2)
+Descripcion: Se obtiene la lista de peliculas en comun entre ambas personas.
+Parametros:
+prefs   - Diccionario que contiene el nombre de criticos de peliculas, peliculas y su calificacion.
+person1 - Elemento del diccionario el cual es un critico de peliculas y contiene peliculas ademas de su calificacion.
+person2 - Elemento del diccionario el cual es un critico de peliculas y contiene peliculas ademas de su calificacion.
+Valor de retorno: Devuelve la lista de peliculas en comun entre ambas personas
+"""
+def get_shared_items(prefs, person1, person2):
+    
+    shared_items = {}
+    for item in prefs[person1]:
+        if item in prefs[person2]:
+            shared_items[item] = 1
+
+    return shared_items
 
 def sim_distance(prefs, person1, person2):
     # Obtener la lista de shared_items
@@ -210,3 +272,31 @@ def loadMovieLens(path='/C:\Users\JuanManuel\PycharmProjects\SR'):
         prefs[user][movies[movieid]] = float(rating)
 
     return prefs
+
+def main():
+
+    print "Ejemplos que aparecen en el proyecto principal"
+
+    """
+    print "Ejemplo 1"
+    from recommendations import critics
+    critics['Lisa Rose']['Lady in the Water']
+    critics['Toby']['Snakes on a Plane']=4.5
+    critics['Toby']
+    """
+
+    """
+    print "Ejemplo 2"
+    from math import sqrt
+    sqrt(pow(5-4,2)+pow(4-1,2))
+    1/(1+sqrt(pow(5-4,2)+pow(4-1,2)))
+    """
+
+    """
+    print "Ejemplo 3"
+    reload(recommendations)
+    recommendations.sim_distance(recommendations.critics, 'Lisa Rose', 'Gene Seymour')
+    """
+
+if __name__ == "__main__":
+    main()

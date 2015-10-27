@@ -112,7 +112,7 @@ def sim_distance(prefs, person1, person2):
                           for item in prefs[person1] if item in prefs[person2]])
 
     return 1.0 / (1.0 + sum_of_squares)
-    
+
 """
 Funcion: sim_pearson(prefs, person1, person2)
 Descripcion: Se obtiene la similiridad con en el score de pearson de person1 y person2.
@@ -157,8 +157,19 @@ def sim_pearson(prefs, person1, person2):
 
 # Devuelve los mejores partidos de la persona del diccionario prefs.
 # El número de resultados y la función de similitud son parametros opcionales.
-
-def topMatches(prefs, person, n=5, similarity = sim_pearson):
+"""
+Funcion: topMatches(prefs, person, n=5, similarity = sim_pearson)
+Descripcion: Se obtiene la similiridad que tiene una persona con todas las demas (en prefs) y devuelve una lista con
+             los puntajes de manera descendete.
+Parametros:
+prefs      - Diccionario que contiene el nombre de criticos de peliculas, peliculas y su calificacion.
+person     - Elemento del diccionario el cual es un critico de peliculas y contiene peliculas ademas de su calificacion.
+n          - numero de personas
+similarity - Se escoge una funcion de similiridad la cual puede ser sim_distance o sim_pearson
+Valor de retorno: Devuelve la similiridad que tiene una persona con todas las demas (en prefs) y devuelve una lista con
+                  los puntajes de manera descendete.
+"""
+def topMatches(prefs, person, n=6, similarity = sim_pearson):
     scores = [(similarity(prefs, person, other), other)
               for other in prefs if other != person]
 
@@ -305,6 +316,18 @@ def main():
     print "Ejemplo 3"
     import recommendations
     recommendations.sim_distance(recommendations.critics, 'Lisa Rose', 'Gene Seymour')
+    """
+
+    """
+    print "Ejemplo 4"
+    import recommendations
+    recommendations.sim_pearson(recommendations.critics, 'Lisa Rose', 'Gene Seymour')
+    """
+
+    """
+    print "Ejemplo 5"
+    import recommendations
+    recommendations.topMatches(recommendations.critics,'Toby',n=6)
     """
 
 if __name__ == "__main__":

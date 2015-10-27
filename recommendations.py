@@ -155,8 +155,6 @@ def sim_pearson(prefs, person1, person2):
 
     return r
 
-# Devuelve los mejores partidos de la persona del diccionario prefs.
-# El número de resultados y la función de similitud son parametros opcionales.
 """
 Funcion: topMatches(prefs, person, n=5, similarity = sim_pearson)
 Descripcion: Se obtiene la similiridad que tiene una persona con todas las demas (en prefs) y devuelve una lista con
@@ -170,45 +168,52 @@ Valor de retorno: Devuelve la similiridad que tiene una persona con todas las de
                   los puntajes de manera descendete.
 """
 def topMatches(prefs, person, n=6, similarity = sim_pearson):
-    scores = [(similarity(prefs, person, other), other)
-              for other in prefs if other != person]
+    scores = [(similarity(prefs, person, other), other) for other in prefs if other != person]
 
-    # Ordena la lista para que los puntajes más altos aparezcan en la parte superior
+    # Se ordena la lista para que los puntajes más altos aparezcan en la parte superior
     scores.sort()
     scores.reverse()
 
-    return scores[0:n]
+    return scores[:n]
 
-# Obtiene recomendaciones para una persona mediante el uso de una media ponderada
-# Del ranking de todos los demás usuarios.
-
+"""
+Funcion: getRecommendations(prefs, person, similarity = sim_pearson)
+Descripcion: Se obtiene una lista de peliculas recomendadas de acuerdo a la similitud que exista con otras personas.
+             Esta lista contiene el nombre de la pelicula y un score se supone que mientras mas alto sea el score mejor
+             sera la recomendacion.
+Parametros:
+prefs      - Diccionario que contiene el nombre de criticos de peliculas, peliculas y su calificacion.
+person     - Elemento del diccionario el cual es un critico de peliculas y contiene peliculas ademas de su calificacion.
+similarity - Se escoge una funcion de similiridad la cual puede ser sim_distance o sim_pearson
+Valor de retorno: Devuelve una lista de peliculas recomendadas
+"""
 def getRecommendations(prefs, person, similarity = sim_pearson):
     totals = {}
     simSums = {}
     for other in prefs:
-        # No me comparo a mí mismo
+        # No se compara consigo mismo
         if other == person:
             continue
         sim = similarity(prefs, person, other)
 
-        # Ignorar las puntuaciones de cero o menor
+        # Se ignora el score menor o igual 0
         if sim <= 0:
             continue
 
         for item in prefs[other]:
-            # Sólo anotar películas que no he visto todavía
+            # Se anotan las películas que no ha visto todavía la persona
             if item not in prefs[person] or prefs[person][item] == 0:
-                # Similitud * Puntuación
+                # Similitud * Score
                 totals.setdefault(item, 0)
                 totals[item] += prefs[other][item] * sim
                 # Suma de similitudes
                 simSums.setdefault(item, 0)
                 simSums[item] += sim
 
-    # Crear la lista normalizada
+    # Se crea una lista normalizada
     rankings = [(total / simSums[item], item) for item, total in totals.items()]
 
-    # Devuelve la lista ordenada
+    # Devuelve la lista con cada pelicula y su score de manera ordenada
     rankings.sort()
     rankings.reverse()
     return rankings
@@ -301,15 +306,15 @@ def main():
     print "Ejemplo 1"
     from recommendations import critics
     critics['Lisa Rose']['Lady in the Water']
-    critics['Toby']['Snakes on a Plane']=4.5
+    critics['Toby']['Snakes on a Plane'] = 4.5
     critics['Toby']
     """
 
     """
     print "Ejemplo 2"
     from math import sqrt
-    sqrt(pow(5-4,2)+pow(4-1,2))
-    1/(1+sqrt(pow(5-4,2)+pow(4-1,2)))
+    sqrt(pow(5 - 4, 2) + pow(4 - 1, 2))
+    1 / ( 1 + sqrt(pow(5 - 4, 2) + pow(4 - 1, 2)))
     """
 
     """
@@ -327,7 +332,14 @@ def main():
     """
     print "Ejemplo 5"
     import recommendations
-    recommendations.topMatches(recommendations.critics,'Toby',n=6)
+    recommendations.topMatches(recommendations.critics, 'Toby', n=6)
+    """
+
+    """
+    print "Ejemplo 6"
+    import recommendations
+    recommendations.getRecommendations(recommendations.critics, 'Toby')
+    recommendations.getRecommendations(recommendations.critics, 'Toby', similarity=recommendations.sim_distance)
     """
 
 if __name__ == "__main__":

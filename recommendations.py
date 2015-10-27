@@ -225,7 +225,7 @@ Descripcion: Se modifica el diccionario de prefs para utilizar las funciones ya 
              en vez de buscar similitudes entre personas se buscan entre peliculas.
 Parametros:
 prefs - Diccionario que contiene el nombre de criticos de peliculas, peliculas y su calificacion.
-Valor de retorno: Devuelve un diccionario modficado donde ahora se busca por medio de peliculas.
+Valor de retorno: Devuelve un diccionario modificado donde ahora se busca por medio de peliculas.
 """
 def transformPrefs(prefs):
     result = {}
@@ -238,12 +238,19 @@ def transformPrefs(prefs):
 
     return result
 
+"""
+Funcion: calculateSimilarItems(prefs, n = 10)
+Descripcion: Se obtiene la similiridad que tiene cada pelicula con los demas esto se hace mediante la funcion topMatches. 
+Parametros:
+prefs - Diccionario que contiene el nombre de criticos de peliculas, peliculas y su calificacion.
+n     - numero de personas.
+Valor de retorno: Devuelve un diccionario con las peliculas mas parecidas.
+"""
 def calculateSimilarItems(prefs, n = 10):
-    # Crear un diccionario de items que muestre otros items
-    # similares
+    # Crear un diccionario de items que muestre otros items similares
     result = {}
 
-    # Invertir la matriz de preferencia para que sea item-centric
+    # Se transforman el diccionario prefs
     itemPrefs = transformPrefs(prefs)
     c = 0
     for item in itemPrefs:
@@ -356,6 +363,13 @@ def main():
     import recommendations
     movies = recommendations.transformPrefs(recommendations.critics)
     recommendations.topMatches(movies, 'Superman Returns')
+    """
+
+    """
+    print "Ejemplo 8"
+    import recommendations
+    itemsim = recommendations.calculateSimilarItems(recommendations.critics)
+    itemsim
     """
 
 if __name__ == "__main__":

@@ -10,7 +10,7 @@ Un diccionario de críticos del cine y sus calificaciones de un pequeño conjunt
 """
 
 critics = {
-    "Lisa Rose" : 
+    "Lisa Rose" :
     {
         "Lady in the Water"  : 2.5,
         "Snakes on a Plane"  : 3.5,
@@ -19,7 +19,7 @@ critics = {
         "You, Me and Dupree" : 2.5,
         "The Night Listener" : 3.0
     },
-    "Gene Seymour" : 
+    "Gene Seymour" :
     {
         "Lady in the Water"  : 3.0,
         "Snakes on a Plane"  : 3.5,
@@ -28,14 +28,14 @@ critics = {
         "The Night Listener" : 3.0,
         "You, Me and Dupree" : 3.5
     },
-    "Michael Phillips" : 
+    "Michael Phillips" :
     {
         "Lady in the Water"  : 2.5,
         "Snakes on a Plane"  : 3.0,
         "Superman Returns"   : 3.5,
         "The Night Listener" : 4.0
     },
-    "Claudia Puig" : 
+    "Claudia Puig" :
     {
         "You, Me and Dupree" : 2.5,
         "Snakes on a Plane"  : 3.5,
@@ -43,7 +43,7 @@ critics = {
         "Superman Returns"   : 4.0,
         "The Night Listener" : 4.5
     },
-    "Mick LaSalle" : 
+    "Mick LaSalle" :
     {
         "Lady in the Water"  : 3.0,
         "Snakes on a Plane"  : 4.0,
@@ -52,7 +52,7 @@ critics = {
         "The Night Listener" : 3.0,
         "You, Me and Dupree" : 2.0
     },
-    "Jack Matthews" : 
+    "Jack Matthews" :
     {
         "Lady in the Water"  : 3.0,
         "Snakes on a Plane"  : 4.0,
@@ -60,13 +60,13 @@ critics = {
         "Superman Returns"   : 5.0,
         "The Night Listener" : 3.0
     },
-    "Toby" : 
+    "Toby" :
     {
         "Snakes on a Plane"  : 4.5,
         "You, Me and Dupree" : 1.0,
         "Superman Returns"   : 4.0
     },
-    "Juan Manuel" : 
+    "Juan Manuel" :
     {
         "Snakes on a Plane"  : 4.5,
         "You, Me and Dupree" : 1.0,
@@ -128,7 +128,7 @@ def sim_pearson(prefs, person1, person2):
     shared_items = get_shared_items(prefs, person1, person2)
 
     # Se obtiene el numero de items en común
-    n = len(si)
+    n = len(shared_items)
 
     # Si no se tienen items en común, se devuelve 0
     if n == 0:
@@ -221,7 +221,7 @@ def getRecommendations(prefs, person, similarity = sim_pearson):
 
 """
 Funcion: transformPrefs(prefs)
-Descripcion: Se modifica el diccionario de prefs para utilizar las funciones ya programadas pero ahora 
+Descripcion: Se modifica el diccionario de prefs para utilizar las funciones ya programadas pero ahora
              en vez de buscar similitudes entre personas se buscan entre peliculas.
 Parametros:
 prefs - Diccionario que contiene el nombre de criticos de peliculas, peliculas y su calificacion.
@@ -240,7 +240,7 @@ def transformPrefs(prefs):
 
 """
 Funcion: calculateSimilarItems(prefs, n = 10)
-Descripcion: Se obtiene la similiridad que tiene cada pelicula con los demas esto se hace mediante la funcion topMatches. 
+Descripcion: Se obtiene la similiridad que tiene cada pelicula con los demas esto se hace mediante la funcion topMatches.
 Parametros:
 prefs - Diccionario que contiene el nombre de criticos de peliculas, peliculas y su calificacion.
 n     - numero de personas.
@@ -264,6 +264,17 @@ def calculateSimilarItems(prefs, n = 10):
 
     return result
 
+"""
+Funcion: getRecommendedItems(prefs, itemMatch, user)
+Descripcion: Esta funcion obtiene todos los items que el usuario dado ha calificado y encuentra items similares y les ponderada
+             un peso de acuerdo a lo similares que sean.
+Parametros:
+prefs     - Diccionario que contiene el nombre de criticos de peliculas, peliculas y su calificacion.
+itemMatch - Es un diccionario que contiene peliculas donde cada pelicula tiene una lista de peliculas ordenadas de la mas parecida
+            a la menos parecida esto gracias a topMatches.
+user      - Es el nombre de un critico de peliculas el cual se debe de encontrar en prefs.
+Valor de retorno: Devuelve una lista de peliculas recomendadas.
+"""
 def getRecommendedItems(prefs, itemMatch, user):
     userRatings = prefs[user]
     scores = {}
@@ -274,7 +285,7 @@ def getRecommendedItems(prefs, itemMatch, user):
 
         # Se cicla por los items parecidos a este
         for (similarity, item2) in itemMatch[item]:
-            
+
             # Ignora si este usuario ya califico este item
             if item2 in userRatings:
                 continue
@@ -295,19 +306,27 @@ def getRecommendedItems(prefs, itemMatch, user):
     rankings.sort()
     rankings.reverse()
 
-    return rankings 
+    return rankings
 
-def loadMovieLens(path='/C:\Users\JuanManuel\PycharmProjects\SR'):
+"""
+Funcion: loadMovieLens(path='/home/juanmanuel/Documents/GitHub/TopicosIA/sistemas-de-recomendacion/movielens')
+Descripcion: Esta funcion obtiene un diccionario con el nombre de una pelicula, anio y puntaje estos se obtienen
+             por medio de unos archivos que se descargaron los cuales pertenecen a movielens.
+Parametros:
+path - Es la ruta en donde se encuentran los archivos a utilizar de movielens.
+Valor de retorno: Devuelve un diccionario con varias peliculas las cuales contienen su nombre, anio y puntaje.
+"""
+def loadMovieLens(path='/home/juanmanuel/Documents/GitHub/TopicosIA/sistemas-de-recomendacion/movielens'):
 
     # Obtener títulos de películas
     movies = {}
-    for line in open(path + '\u.item'):
+    for line in open(path + '/u.item'):
         (id, title) = line.split('|')[0:2]
         movies[id] = title
 
     # Cargar datos
     prefs = {}
-    for line in open(path + '\u.data'):
+    for line in open(path + '/u.data'):
         (user, movieid, rating, ts) = line.split('\t')
         prefs.setdefault(user, {})
         prefs[user][movies[movieid]] = float(rating)
@@ -370,6 +389,14 @@ def main():
     import recommendations
     itemsim = recommendations.calculateSimilarItems(recommendations.critics)
     itemsim
+    """
+
+    """
+    print "Ejemplo 9"
+    import recommendations
+    itemsim = recommendations.calculateSimilarItems(recommendations.critics)
+    itemsim
+    recommendations.getRecommendedItems(recommendations.critics,itemsim,'Toby')
     """
 
 if __name__ == "__main__":
